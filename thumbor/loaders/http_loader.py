@@ -46,7 +46,11 @@ def return_contents(response, url, callback, context):
     context.metrics.incr('original_image.status.' + str(response.code))
     if response.error:
         result.successful = False
-        result.error = LoaderResult.ERROR_NOT_FOUND
+        # Don't pass-on upstream gateway errors as 404s but as a 502
+        if response.code == 599:
+            result.error = LoaderResult.ERROR_UPSTREAM
+        else:
+            result.error = LoaderResult.ERROR_NOT_FOUND
 
         logger.warn("ERROR retrieving image {0}: {1}".format(url, str(response.error)))
 
