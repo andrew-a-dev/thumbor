@@ -33,7 +33,8 @@ tests_require = [
     "yanc",
     "remotecv",
     "hiredis",
-    "scikit-image",
+    "scikit-image==0.12.dev0",
+    "celery"
 ]
 
 
